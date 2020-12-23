@@ -37,12 +37,16 @@ H1N1_data <- NHFSPUF %>%
   na.omit()
 ```
 
-### Code and data supporting this analysis is available at: https://github.com/yangyu77/Vaccination_propensity_score_analysis.git
+**Code and data supporting this analysis is available at:** https://github.com/yangyu77/Vaccination_propensity_score_analysis.git
 
 # Abstract
+As the COVID-19 pandemic has impacted all nations and populations worldwide, getting vaccines become an urge. However, many potential factors affect the general public's attitudes to vaccination. The present study investigate whether there is a causal inference between individual knowledge about the disease and the vaccination behavior, hoping to provide insights on methods of improving the vaccination rate. 
 
+The present study analyzes public-use dataset which obtained from the United States National 2009 H1N1 Flu Survey, because the H1N1 flu is analogous to the COVID-19 pandemic. Propensity score matching and multivariable logistic regression is used to simulate a quasi-experimental design for the obsevational data. 
 
-## Keywords: propensity score analysis; vaccination; H1N1 flu;
+The results confirm the causal inference between individual knowledge and behavior of getting vaccinated, indicating a possible method for improving the will to get vaccine: educating the general public about the disease may increase vaccination rate among society.
+
+**Keywords: propensity score analysis; multivariable logistic regression; vaccination; H1N1 flu;**
 
 # 1 Introduction
 Moving into 2020, the COVID-19 pandemic has impacted all nations and populations worldwide. Faced with the unstoppable spread of the virus, developing vaccines against this new disease has become the best hope and an urge of many countries (Pouge et al., 2020). However, developing vaccines is quite a different thing from general people accepting the vaccination. More than a few recent studies suggest the public’s hesitancy toward vaccination (Chou & Budenz, 2020; Salali & Uysal, 2020). Similarly, the H1N1 influenza pandemic occoured in 2009 reduced public confidence in vaccination. This negative response toward vaccination will cause serious problem to the overall safety of countries under severe situations of the pandemic, as a vaccine could only be useful for the whole society to back to normal when a sufficiently high percentage of people get vaccinated, yielding widespread immunity (Salali & Uysal, 2020). To possibly reverse this hesitancy toward vaccination, understanding the reasons behind the hesitancy is undoubtedly crucial.
@@ -54,7 +58,7 @@ The present study aims to investigate whether the personal knowledge about the d
 
 ## 2.1 Data
 ### Source
-The public-use data file used for analysis was obtained from the National 2009 H1N1 Flu Suery (NHFS) implemented by the National Center for Immunization and Respiratory Diseases (NCIRD) and the National Center for Health Statistics (NCHS) of the Centers for Disease Control and Prevention (CDC). 
+The public-use data file used for analysis was obtained from the National 2009 H1N1 Flu Survey (NHFS) implemented by the National Center for Immunization and Respiratory Diseases (NCIRD) and the National Center for Health Statistics (NCHS) of the Centers for Disease Control and Prevention (CDC). 
 
 ### Target population
 The target population for the NHFS survey was all persons in the Unted States aged 6 months and older.
@@ -147,7 +151,7 @@ H1N1_data <- H1N1_data %>%
   na.omit()
 ```
 
-```{r, echo=FALSE, fig.height=8, fig.width=5, fig.cap=paste("Data Overview: Response count by State")}
+```{r, echo=FALSE, fig.height=8, fig.width=5, fig.cap=paste("Figure 1. Data Overview: Response count by State")}
 # Data Overview: Response count by State
 a <- H1N1_data %>%
   count(STATE_NAME) 
@@ -172,66 +176,50 @@ Although statistical adjustments were made to account for nonresponse and underc
 \newpage
 
 ### Selected variables
-The original R-format data file `NHFSPUF.RData` is created from the R program `NHFSPUF.R` provided by the NHFS documentation. In order to focus on and analyze the causal effect of knowledge on the intent to get vaccinated, the original data file has been cleaned and wrangled. All missing values, "refuse to answer" values and "unknown" values are excluded from the dataset. A total of 32,071 observations is analyzed.
+The present study generates a R-format data file `NHFSPUF.RData` from the R program `NHFSPUF.R` provided by the NHFS documentation. The data file `NHFSPUF.RData` is then cleaned and wrangled for analyzing the causal effect of knowledge on the intent to get vaccinated. All missing values, "refuse to answer" values and "unknown" values are excluded from the dataset. All children aged below 18 did not have data about self-reported concerns or opinions, so they were not included in `H1N1_data`. Therefore, a total of 32,071 observations is analyzed.
 
-A list of variables are selected to be included in the prepared dataset `H1N1_data`: (All children aged below 18 did not have data about self-reported concerns or opinions, so they were not included in `H1N1_data`.) See a showcase of all variables in Table 1, 2, and 3.
+A list of variables are selected to be included in the prepared dataset `H1N1_data` (See a showcase in Table 1, 2, 3): 
 
-+ VACC_H1N1_F: An indicator for wether the respondent get vaccinated. Value 1 indicates "yes", value 0 indicates "no".
++ **VACC_H1N1_F**: An indicator for wether the respondent get vaccinated. Value 1 indicates "yes", value 0 indicates "no".
 
-+ VACC_SEAS_COUNT: The number of seasonal flu vaccinations get by the respondent. The value is allowed to be greater than one  only for children under 9 years of age.
++ **VACC_SEAS_COUNT**: The number of seasonal flu vaccinations get by the respondent. The value is allowed to be greater than one  only for children under 9 years of age.
 
-+ BEHAVIOR: This variable indicates the number of actions the respondent took to avoid inffection. It is constructed by summing seven behavioral indicator (value 0 or 1) from the original dataset. 
++ **BEHAVIOR**: This variable indicates the number of actions the respondent took to avoid inffection. It is constructed by summing seven behavioral indicator (value 0 or 1) from the original dataset. 
 
-+ CONCERN_H1N1: This variable indicates the self-reported level of concern about the H1N1 flu. It is constructed by integrating distint levels of concern about H1N1 flu in the original data file. It consists of four levels: "Not at all", "Not very", "Somewhat", "Very".
++ **CONCERN_H1N1**: This variable indicates the self-reported level of concern about the H1N1 flu. It is constructed by integrating distint levels of concern about H1N1 flu in the original data file. It consists of four levels: "Not at all", "Not very", "Somewhat", "Very".
 
-+ OP_EFFECTIVE_VACC: Self-reported opinion on the effectiveness of H1N1 vaccine. It consists of four levels: "Very Effective", "Somewhat Effective", "Not Very Effective", and "Not At All Effective".
++ **OP_EFFECTIVE_VACC**: Self-reported opinion on the effectiveness of H1N1 vaccine. It consists of four levels: "Very Effective", "Somewhat Effective", "Not Very Effective", and "Not At All Effective".
 
-+ RISK_SICK_WO_VACC: Percieved risk of getting sick with H1N1 flu without vaccine. It consists of four levels: "Very High", "Somewhat High", "Somewhat Low", "Very Low".
++ **RISK_SICK_WO_VACC**: Percieved risk of getting sick with H1N1 flu without vaccine. It consists of four levels: "Very High", "Somewhat High", "Somewhat Low", "Very Low".
 
-+ WORRY_SICK_W_VACC: Self-reported extent of worry about getting sick from the H1N1 vaccine. There are four levels: "Very Worried", "Somewhat Worried", "Not Very Worried", and "Not At All Worried".
++ **WORRY_SICK_W_VACC**: Self-reported extent of worry about getting sick from the H1N1 vaccine. There are four levels: "Very Worried", "Somewhat Worried", "Not Very Worried", and "Not At All Worried".
 
-+ AGE_GROUP: The age group the respondent belongs to. The variable contains five age groups: "18-34 Years", "35-44 Years", "45-54 Years", "55-64 Years", "65+ Years"
++ **AGE_GROUP**: The age group the respondent belongs to. The variable contains five age groups: "18-34 Years", "35-44 Years", "45-54 Years", "55-64 Years", "65+ Years"
 
-+ SEX_I: The gender of respondent.
++ **SEX_I**: The gender of respondent.
 
-+ EDU: The adult self-reported education level. There are four levels: "< 12 Years", "12 Years", "Some College", "College Graduate".
++ **EDU**: The adult self-reported education level. There are four levels: "< 12 Years", "12 Years", "Some College", "College Graduate".
 
-+ STATE_NAME: The self-reported state location. If data is missing or refused to answer, then it equals the sampling state based on telephone exchange.
++ **STATE_NAME**: The self-reported state location. If data is missing or refused to answer, then it equals the sampling state based on telephone exchange.
 
-+ KNOW_H1N1: The self-reported level of knowledge about H1N1 flu.Value 1 indicates "know a lot", while 0 indicates "knowing little or none". This variable serves as the treatment in the present study.
++ **KNOW_H1N1**: The self-reported level of knowledge about H1N1 flu.Value 1 indicates "know a lot", while 0 indicates "knowing little or none". It serves as the treatment in the present study.
 
 ```{r, echo=FALSE, fig.cap=paste("Overview of All Variables")}
 head(H1N1_data[1:4], 6) %>%
-  kbl(caption = "Variable 1 to 4") %>%
+  kbl(caption = "Table 1: Variable 1 to 4") %>%
   kable_classic(full_width = F, html_font = "Cambria")
 
 head(H1N1_data[5:7], 6) %>%
-  kbl(caption = "Variable 5 to 7") %>%
+  kbl(caption = "Table 2: Variable 5 to 7") %>%
   kable_classic(full_width = F, html_font = "Cambria")
 
 head(H1N1_data[8:12], 6) %>%
-  kbl(caption = "Variable 8 to 12") %>%
+  kbl(caption = "Table 3: Variable 8 to 12") %>%
   kable_classic(full_width = F, html_font = "Cambria")
 ```
 
-```{r, results=FALSE, echo=FALSE, fig.cap=paste("Data Overview: Levels of education and knowledge about H1N1 flu")}
-## Knowledge and Education
-edu_know<-H1N1_data %>%
-  count(KNOW_H1N1, EDU)
-
-edu <- c("< 12 Years", "12 Years", "Some College", "College Graduate")
-edu_know %>%
-  ggplot(aes(x=EDU, y=n, fill=as.character(KNOW_H1N1))) + 
-  scale_x_discrete(limits = edu) + 
-  geom_bar(position="fill", stat="identity") + 
-  scale_fill_manual(values = c("coral2", "turquoise3")) + 
-  labs(title="Levels of Education and % of Respondents Knowledgeable About H1N1 flu", 
-       x="Level of education", y="Proportion of respondents (%)", 
-       fill="Knowledge about H1N1 flu") + 
-  theme_classic()
-```
-
-```{r, echo=FALSE, fig.height=4, fig.width=6, fig.cap=paste("Intent of vaccination and knowledge about H1N1 flu")}
+The figure 2 clearly suggests that respondents' level of knowledge about H1N1 flu is related to the vaccination decision. Respondents with a lot of knowledge about the disease are more likely to get vaccinated. Further analysis is needed to examine the causal inference.
+```{r, echo=FALSE, fig.height=4, fig.width=6, fig.cap=paste("Figure 2. Vaccination and knowledge about H1N1 flu")}
 temp <- H1N1_data %>% 
   count(KNOW_H1N1, VACC_H1N1_F) 
 
@@ -240,14 +228,17 @@ temp %>%
   geom_bar(position = "fill", stat = "identity") + 
   labs(title = "Respondents' Knowledge about H1N1 flu and Getting Vaccinated", 
        x="Knowledge about H1N1 flu", y="Proportion of respondents (%)", 
-       fill="Wether get vaccinated or not") +
+       fill="Whether get vaccinated or not") +
   theme_classic()
 ```
 
 \newpage
 
 ## 2.2 Propensity Score Analysis
-To find whether there is a causal inference between whether having knowledge about the virus and vaccination, the present paper utilized propensity score analysis to simulate a quasi-experiment as random assignment of respondents is infeasible.
+To find whether there is a causal inference between whether having knowledge about the virus and vaccination, the present paper utilized propensity score analysis to simulate a quasi-experiment as random assignment of respondents is infeasible. Propensity scores is a statistical technique useful for evaluating treatment effects when using quasi-experimental or observational data (Rosenbaum & Rubin, 1983). Basically, the propensity score methods improve the comparability of treatment groups on observed characteristics and reduce bias in the effect estimates (Rosenbaum & Rubin, 1983). 
+
+There are two assumptions associated with causality that we need to understand before we can use propensity scores. First, the independent variables in the model and the error term should be independent of each other. Ommiting variables is a major problem that violates this assumption by which creating a biased estimate of the effect. Second, the assignment of study participants to treatment conditions is
+independent of the outcome. This is known as the Ignorable Treatment Assignment Assumption (Olmos & Govindasamy, 2015). To possibly preserve these assumptions, the balance of covariates between treated and the untreated groups need to be examined.
 
 ### Preliminary Analysis
 Before calculating the propensity scores, it is crucial to check the balance of covariates between treated and the untreated groups. A Chi-square test can be used to test for the difference in distribution of categorical variables between two independent groups (Hazra & Gogtay, 2016). The resulting table (p-value = 0) indicates that there is at least one variable creating an imbalance between the two groups. 
@@ -260,13 +251,11 @@ xBalance(KNOW_H1N1 ~ VACC_SEAS_COUNT + BEHAVIOR + CONCERN_H1N1 +
   kable_classic(full_width = F, html_font = "Cambria")
 ```
 
-### Estimation of Propensity scores (Model)
-Propensity scores is a statistical technique useful for evaluating treatment effects when using quasi-experimental or observational data (Rosenbaum & Rubin, 1983). Basically, the propensity score methods improve the comparability of treatment groups on observed characteristics and reduce bias in the effect estimates (Rosenbaum & Rubin, 1983). 
-
-The analyses were conducted using RStudio Version 1.2.5042 software. A propensity score representing the probability of having a lot knowledge about H1N1 flu was calculated to adjust for potential confounding. Propensity scores were calculated through a multivariable logistic regression. 
+### Estimation of Propensity Scores (Model)
+The analyses were conducted using RStudio Version 1.2.5042 software. A propensity score for observation was calculated to adjust for potential confounding. Propensity scores were estimated using a multivariable logistic regression model. A logistic regression model is used not only for it allows binary dependent variable but also for it is the default option for propensity scores estimation. The model includes all variables to reduce the chance of hidden bias and avoid imbalance between treated and untreated groups.
 
 The general form of the multivariable logistic regression model is: 
-$$log\Big(\dfrac{p}{1-p}\Big) = \beta_0 + \beta_1X_1 + \beta_2X_2 + ...+ \beta_kX_k$$
+$$log\Big(\dfrac{p}{1-p}\Big) = \beta_0 + \beta_1X_1 + \beta_2X_2 + ...+ \beta_kX_k + \epsilon_i$$
 
 The multivariable logistic regression model specifically for the analysis is:
 $$log\Big(\dfrac{p}{1-p}\Big) = \beta_0 + \beta_1X_{vacc\_seas\_count} + \beta_2X_{BEHAVIOR} +  \beta_3X_{CONCERN\_H1N1Not very} + \beta_4X_{CONCERN\_H1N1Somewhat} + $$
@@ -291,11 +280,11 @@ model1 <- glm(KNOW_H1N1 ~ VACC_SEAS_COUNT + BEHAVIOR + CONCERN_H1N1 +
 summary(model1)
 ```
 
-Based on the fitted multivariate logistic regression model, we are able to calculate the propensity score for each obsevation. Although some of the covariates do not show significance in predicting treatment, these covariats are still included in the propensity score calculation, because the estimating model should be as inclusive as possible to reduce the chance of hidden bias and avoid imbalance between treated and untreated groups.
+Based on the fitted multivariable logistic regression model, we are able to calculate the propensity score for each obsevation. Although some of the covariates do not show significance in predicting treatment, these covariats are still included in the propensity score calculation, because the estimating model should be as inclusive as possible to reduce the chance of hidden bias and avoid imbalance between treated and untreated groups.
 
-The propensity score `.fitted` for each observation is obtained by substituting the $\beta$ coefficients with according values and computing the sum of intercept $\beta_0$ and all $\beta X$ terms. 
+The propensity score `.fitted` for each observation is obtained by substituting the $\beta$ coefficients with according values and computing the sum of intercept $\beta_0$ and all $\beta X$ terms. Every propensity score is pridicted and placed into the dataset for each respondent.
 
-For example, a repondent would have a propensity score of $-1.871154 + 0.349258X_{VACC\_SEAS\_COUNT} + 0.062385X_{BEHAVIOR} + 0.084822X_{CONCERN\_H1N1Somwhat} + (-0.232652)X_{OP\_EFFECTIVE\_VACCSomewhat Effective} + (-0.250360)X_{RISK\_SICK\_WO\_VACCVery Low} + (-0.297755)X_{WORRY\_SICK\_W\_VACCNot Very Worried} + (-0.109446) X_{AGE\_GROUP65+ Years} + 0 X_{SEX\_IFemale} + 1.140691 X_{EDUSome College} + 0.219564 X_{STATE\_NAMENew Mexico}$
+For example, a repondent would have a propensity score of $-1.871154 + 0.349258X_{VACC\_SEAS\_COUNT} +$$ 0.062385X_{BEHAVIOR} + 0.084822X_{CONCERN\_H1N1Somwhat} + (-0.232652)X_{OP\_EFFECTIVE\_VACCSomewhat Effective} + $$(-0.250360)X_{RISK\_SICK\_WO\_VACCVery Low} + (-0.297755)X_{WORRY\_SICK\_W\_VACCNot Very Worried} + $$(-0.109446) X_{AGE\_GROUP65+ Years} + 0 X_{SEX\_IFemale} + 1.140691 X_{EDUSome College} +$$ 0.219564 X_{STATE\_NAMENew Mexico}$
 
 ```{r, echo=FALSE}
 H1N1_data <- augment(data = H1N1_data, model1, type.predict="response") %>%
@@ -303,6 +292,10 @@ H1N1_data <- augment(data = H1N1_data, model1, type.predict="response") %>%
   arrange(.fitted, KNOW_H1N1)
 ```
 
+### Propensity Score Matching
+We uses the matching function in arm package, which finds the closest of the ones that were not treated, to match with each one that was treated. Since there are in total 16055 respondent assigned in the treated group (KNOW_H1N1 = 1), the matched dataset `H1N1_data_matched` has 32110 observations. 
+
+Two back to back histograms are plotted to determine the match between groups. Figure 3 and 4 together show an improvement in the match between the two distributions of propensity scores after the match. 
 ```{r, echo=FALSE}
 H1N1_data$have_knowledge <- as.integer(ifelse(H1N1_data$KNOW_H1N1==0, 0, 1))
 matches <- matching(z = H1N1_data$have_knowledge, score = H1N1_data$.fitted)
@@ -310,7 +303,7 @@ matches <- matching(z = H1N1_data$have_knowledge, score = H1N1_data$.fitted)
 H1N1_data <- cbind(H1N1_data, matches)
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.cap=paste("Figure 3. Propensity score before matching")}
 histbackback(split(H1N1_data$.fitted, H1N1_data$KNOW_H1N1), main= "Propensity score before matching", xlab=c("control", "treatment"))
 ```
 
@@ -318,24 +311,43 @@ histbackback(split(H1N1_data$.fitted, H1N1_data$KNOW_H1N1), main= "Propensity sc
 H1N1_data_matched <- H1N1_data %>% 
   filter(match.ind != 0) %>% 
   dplyr::select(-match.ind, -cnts, -have_knowledge)
-
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.cap=paste("Figure 4. Propensity score after matching")}
 histbackback(split(H1N1_data_matched$.fitted, H1N1_data_matched$KNOW_H1N1), main= "Propensity score after matching", xlab=c("control", "treatment"))
 ```
 
+
 # 3 Results
-```{r}
+The present study utilizes a propensity score matching with multivariable logistic regression model to simulate a quasi-experimental design for obsevational data.
+Results show a significant relationship between having knowledge about the H1N1 flu and get vaccination in the context of quasi-experimental design. Therefore, it is conclude that the knowledge about diseases has a causal effect on the vaccination behavior. 
+```{r, echo=FALSE}
 propensity_score_regression <- glm(VACC_H1N1_F~VACC_SEAS_COUNT + BEHAVIOR + CONCERN_H1N1 + 
                OP_EFFECTIVE_VACC + RISK_SICK_WO_VACC + WORRY_SICK_W_VACC +
                 AGE_GROUP + SEX_I + EDU + STATE_NAME + KNOW_H1N1, 
                                    family=binomial, data = H1N1_data_matched)
 
-huxtable::huxreg(propensity_score_regression)
+huxtable::huxreg(propensity_score_regression, statistics = c(N = "nobs", "logLik", "AIC"))
 ```
 
 # 4 Discussion
+
+```{r, results=FALSE, echo=FALSE, fig.cap=paste("Data Overview: Levels of education and knowledge about H1N1 flu")}
+## Knowledge and Education
+edu_know<-H1N1_data %>%
+  count(KNOW_H1N1, EDU)
+
+edu <- c("< 12 Years", "12 Years", "Some College", "College Graduate")
+edu_know %>%
+  ggplot(aes(x=EDU, y=n, fill=as.character(KNOW_H1N1))) + 
+  scale_x_discrete(limits = edu) + 
+  geom_bar(position="fill", stat="identity") + 
+  scale_fill_manual(values = c("coral2", "turquoise3")) + 
+  labs(title="Levels of Education and % of Respondents Knowledgeable About H1N1 flu", 
+       x="Level of education", y="Proportion of respondents (%)", 
+       fill="Knowledge about H1N1 flu") + 
+  theme_classic()
+```
 
 # References
 Austin, P. C., & Merlo, J. (2017). Intermediate and advanced topics in multilevel logistic regression analysis. Statistics in medicine, 36(20), 3257–3277. https://doi.org/10.1002/sim.7336
@@ -343,6 +355,8 @@ Austin, P. C., & Merlo, J. (2017). Intermediate and advanced topics in multileve
 Chou, W. S., & Budenz, A. (2020). Considering emotion in covid-19 vaccine communication: Addressing vaccine hesitancy and fostering vaccine confidence. Health Communication, doi:http://dx.doi.org/10.1080/10410236.2020.1838096
 
 Hazra, A., & Gogtay, N. (2016). Biostatistics series module 4: Comparing groups - categorical variables. Indian Journal of Dermatology, 61(4), 385-392. doi:10.4103/0019-5154.185700
+
+Olmos, A., & Govindasamy, P. (2015). Propensity Scores: A Practical Introduction Using R. Journal Of MultiDisciplinary Evaluation, 11(25), 68-88. Retrieved from https://journals.sfu.ca/jmde/index.php/jmde_1/article/view/431
 
 Pogue, K., Jensen, J., Stancil, C., Ferguson, D., Hughes, S., Mello, E., . . . Poole, B. D. (2020). Influences on Attitudes regarding Potential COVID-19 Vaccination in the United States. doi:10.20944/preprints202009.0338.v1
 
