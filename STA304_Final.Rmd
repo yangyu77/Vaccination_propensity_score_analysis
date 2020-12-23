@@ -2,7 +2,7 @@
 title: "Knowledge about Diseases and Vaccination Decision: Implications from Propensity Score Analysis on the U.S. National 2009 H1N1 Flu Survey"
 author: "Yuxin Yang 1004834673"
 date: "17/12/2020"
-output: pdf_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -11,10 +11,6 @@ library(dplyr)
 library(tidyverse)
 library(broom)
 library(arm)
-
-library(plotly)
-library(viridis)
-library(hrbrthemes)
 
 library(kableExtra)
 library(Hmisc)
@@ -204,6 +200,8 @@ A list of variables are selected to be included in the prepared dataset `H1N1_da
 
 + **KNOW_H1N1**: The self-reported level of knowledge about H1N1 flu.Value 1 indicates "know a lot", while 0 indicates "knowing little or none". It serves as the treatment in the present study.
 
+\newpage 
+
 ```{r, echo=FALSE, fig.cap=paste("Overview of All Variables")}
 head(H1N1_data[1:4], 6) %>%
   kbl(caption = "Table 1: Variable 1 to 4") %>%
@@ -349,24 +347,67 @@ edu_know %>%
   theme_classic()
 ```
 
+
 # References
-Austin, P. C., & Merlo, J. (2017). Intermediate and advanced topics in multilevel logistic regression analysis. Statistics in medicine, 36(20), 3257–3277. https://doi.org/10.1002/sim.7336
+Andrew Gelman and Yu-Sung Su (2020). arm: Data Analysis Using Regression and
+  Multilevel/Hierarchical Models. R package version 1.11-2.
+  https://CRAN.R-project.org/package=arm
+  
+Austin, P. C., & Merlo, J. (2017). Intermediate and advanced topics in multilevel logistic regression 
+  analysis. Statistics in medicine, 36(20), 3257–3277. https://doi.org/10.1002/sim.7336
 
-Chou, W. S., & Budenz, A. (2020). Considering emotion in covid-19 vaccine communication: Addressing vaccine hesitancy and fostering vaccine confidence. Health Communication, doi:http://dx.doi.org/10.1080/10410236.2020.1838096
+Ben B. Hansen and Jake Bowers (2008). Covariate balance in simple, stratified and
+  clustered comparative studies. Statistical Science. 23(2):219--236.
 
-Hazra, A., & Gogtay, N. (2016). Biostatistics series module 4: Comparing groups - categorical variables. Indian Journal of Dermatology, 61(4), 385-392. doi:10.4103/0019-5154.185700
+Chou, W. S., & Budenz, A. (2020). Considering emotion in covid-19 vaccine communication: Addressing 
+  vaccine hesitancy and fostering vaccine confidence. Health Communication, 
+  doi:http://dx.doi.org/10.1080/10410236.2020.1838096
 
-Olmos, A., & Govindasamy, P. (2015). Propensity Scores: A Practical Introduction Using R. Journal Of MultiDisciplinary Evaluation, 11(25), 68-88. Retrieved from https://journals.sfu.ca/jmde/index.php/jmde_1/article/view/431
+David Robinson, Alex Hayes and Simon Couch (2020). broom: Convert Statistical Objects
+  into Tidy Tibbles. R package version 0.7.0. https://CRAN.R-project.org/package=broom
+  
+Douglas Bates, Martin Maechler, Ben Bolker, Steve Walker (2015). Fitting Linear
+  Mixed-Effects Models Using lme4. Journal of Statistical Software, 67(1), 1-48.
+  doi:10.18637/jss.v067.i01.
+  
+Frank E Harrell Jr, with contributions from Charles Dupont and many others. (2020).
+  Hmisc: Harrell Miscellaneous. R package version 4.4-1.
+  https://CRAN.R-project.org/package=Hmisc
+  
+Hadley Wickham, Romain François, Lionel Henry and Kirill Müller (2020). dplyr: A
+  Grammar of Data Manipulation. R package version 1.0.2.
+  https://CRAN.R-project.org/package=dplyr
 
-Pogue, K., Jensen, J., Stancil, C., Ferguson, D., Hughes, S., Mello, E., . . . Poole, B. D. (2020). Influences on Attitudes regarding Potential COVID-19 Vaccination in the United States. doi:10.20944/preprints202009.0338.v1
+Hao Zhu (2020). kableExtra: Construct Complex Table with 'kable' and Pipe Syntax. R
+  package version 1.3.1. https://CRAN.R-project.org/package=kableExtra
+  
+Hazra, A., & Gogtay, N. (2016). Biostatistics series module 4: Comparing groups - categorical variables. 
+  Indian Journal of Dermatology, 61(4), 385-392. doi:10.4103/0019-5154.185700
 
-Rosenbaum, P., & Rubin, D. (1983). The Central Role of the Propensity Score in Observational Studies for Causal Effects. Biometrika, 70(1), 41-55. doi:10.2307/2335942
+Jake Bowers, Mark Fredrickson, and Ben Hansen (2019). RItools:Randomization Inference
+  Tools. R package version 0.1-17.
 
-Salali, G. D., & Uysal, M. S. (2020). COVID-19 vaccine hesitancy is associated with beliefs on the origin of the novel coronavirus in the UK and Turkey. Psychological Medicine, 1-3. doi:10.1017/s0033291720004067
+Olmos, A., & Govindasamy, P. (2015). Propensity Scores: A Practical Introduction Using R. Journal Of 
+  MultiDisciplinary Evaluation, 11(25), 68-88. Retrieved from 
+  https://journals.sfu.ca/jmde/index.php/jmde_1/article/view/431
 
-U.S. Department of Health and Human Services (DHHS). National Center for Health Statistics. The National 2009 H1N1 Flu Survey, Hyattsville, MD: Centers for Disease Control and Prevention, 2012.
-Information about the NHFS is located at http://www.cdc.gov/nchs/nis/about_nis.htm#h1n1.
+Pogue, K., Jensen, J., Stancil, C., Ferguson, D., Hughes, S., Mello, E., . . . Poole, B. D. (2020). 
+  Influences on Attitudes regarding Potential COVID-19 Vaccination in the United States. 
+  doi:10.20944/preprints202009.0338.v1
 
+Rosenbaum, P., & Rubin, D. (1983). The Central Role of the Propensity Score in Observational Studies for 
+  Causal Effects. Biometrika, 70(1), 41-55. doi:10.2307/2335942
+
+Salali, G. D., & Uysal, M. S. (2020). COVID-19 vaccine hesitancy is associated with beliefs on the 
+  origin of the novel coronavirus in the UK and Turkey. Psychological Medicine, 1-3. 
+  doi:10.1017/s0033291720004067
+
+U.S. Department of Health and Human Services (DHHS). National Center for Health Statistics. The National 
+  2009 H1N1 Flu Survey, Hyattsville, MD: Centers for Disease Control and Prevention, 2012.
+  Information about the NHFS is located at http://www.cdc.gov/nchs/nis/about_nis.htm#h1n1.
+
+Wickham et al., (2019). Welcome to the tidyverse. Journal of Open Source Software,
+  4(43), 1686, https://doi.org/10.21105/joss.01686
 
 
 
